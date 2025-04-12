@@ -3,8 +3,47 @@ import { FlightChoose, SelectDetails } from "../components";
 import { FlightDealsCard, PlacesCard } from "../container";
 import { right } from "../assets/icons";
 import { bed, holes, kenya, seoul, shangai, wall } from "../assets/images";
-
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
 const FlightExplore = () => {
+  const location = useLocation();
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const origin = location.state.origin;
+  const destination = location.state.destination;
+  const departureDate = location.state.departureDate;
+  const returnDate = location.state.returnDate;
+  const adult = location.state.adult;
+  const minor = location.state.minor;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://localhost:7021/api/FlightBooking/searchFlight`,
+          {
+            params: {
+              origin,
+              destination,
+              departureDate,
+              returnDate,
+              adults: adult,
+              minor: minor,
+            },
+          }
+        );
+        setFlights(response.data);
+      } catch (error) {
+        console.error("Lỗi khi fetch API:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="px-8 w-full flex flex-col">
@@ -12,13 +51,19 @@ const FlightExplore = () => {
           <SelectDetails />
         </div>
         <div className="mt-16">
-          <FlightChoose />
+          {loading ? (
+            <p>Đang tải dữ liệu chuyến bay...</p>
+          ) : flights.data.length > 0 ? (
+            <FlightChoose flights={flights.data} />
+          ) : (
+            <p>Không có chuyến bay nào!</p>
+          )}
         </div>
         <div className="mt-20 flex flex-col gap-7">
           <div className="flex items-center justify-between">
             <p className="text-[#6E7491] font-medium md:font-bold sm:text-base md:text-[24px] md:leading-8">
-              Find{" "}
-              <span className="text-[#54cdb7]"> places to stay</span> in japan
+              Find <span className="text-[#54cdb7]"> places to stay</span> in
+              japan
             </p>
             <Link
               to="/hotels"
@@ -47,44 +92,43 @@ const FlightExplore = () => {
           </div>
         </div>
         <div className="mt-20 flex flex-col gap-7">
-        <div className="flex items-center justify-between">
-          <p className="text-[#6E7491] font-medium md:font-bold sm:text-base md:text-[24px] md:leading-8">
-          People in <span className="text-[#605DEC]"> San Francisco </span>  also <br className=" block sm:hidden"/> searched for
-          </p>
-          <Link
-            to="/packages"
-            className="flex items-start justify-center gap-1"
-          >
-            <p className="text-[#A1B0CC] text-sm md:text-lg">All</p>
-            <img src={right} alt="arrow" className="w-5 h-5 md:w-6 md:h-6" />
-          </Link>
+          <div className="flex items-center justify-between">
+            <p className="text-[#6E7491] font-medium md:font-bold sm:text-base md:text-[24px] md:leading-8">
+              People in <span className="text-[#605DEC]"> San Francisco </span>{" "}
+              also <br className=" block sm:hidden" /> searched for
+            </p>
+            <Link
+              to="/packages"
+              className="flex items-start justify-center gap-1"
+            >
+              <p className="text-[#A1B0CC] text-sm md:text-lg">All</p>
+              <img src={right} alt="arrow" className="w-5 h-5 md:w-6 md:h-6" />
+            </Link>
+          </div>
+          <div className="flex gap-16 flex-wrap items-start ">
+            <FlightDealsCard
+              image={shangai}
+              title="Shanghai,"
+              name="China"
+              price="$598"
+              des=" China’s most international city"
+            />
+            <FlightDealsCard
+              image={kenya}
+              title="Nairobi, "
+              name="Kenya"
+              price="$1,248"
+              des="Dubbed the Safari Capital of the World"
+            />
+            <FlightDealsCard
+              image={seoul}
+              title="Seoul, "
+              name="South Korea"
+              price="$589"
+              des="This modern city is a traveler’s dream"
+            />
+          </div>
         </div>
-        <div className="flex gap-16 flex-wrap items-start ">
-          <FlightDealsCard
-            image={shangai}
-            title="Shanghai,"
-            name="China"
-            price="$598"
-            des=" China’s most international city"
-          />
-          <FlightDealsCard
-            image={kenya}
-            title="Nairobi, "
-            name="Kenya"
-            price="$1,248"
-            des="Dubbed the Safari Capital of the World"
-          />
-          <FlightDealsCard
-            image={seoul}
-            title="Seoul, "
-            name="South Korea"
-            price="$589"
-            des="This modern city is a traveler’s dream"
-          />
-          
-        </div>
-        </div>
-
       </div>
     </>
   );
