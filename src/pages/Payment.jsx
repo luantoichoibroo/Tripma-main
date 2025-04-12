@@ -46,7 +46,7 @@ const Payment = () => {
   const getUpdatedPricing = async () => {
     const flightPricingRequest = flightOffers[0];
     const response = await axios.post(
-      "https://localhost:7021/api/FlightBooking/CreateOrder",
+      "https://localhost:7021/api/FlightBooking/searchFlightPricing",
       flightPricingRequest,
       {
         headers: {
@@ -62,10 +62,10 @@ const Payment = () => {
       travelers: travelers,
       flightOffers: flightOffers,
     };
-
+    console.log(flightOrderRequest);
     try {
       const response = await axios.post(
-        "https://localhost:7086/api/Flight/CreateOrder",
+        "https://localhost:7021/api/FlightBooking/CreateOrder",
         flightOrderRequest,
         {
           headers: {
