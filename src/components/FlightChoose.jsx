@@ -24,10 +24,9 @@ const FlightChoose = (props) => {
   };
 
   const handleFlightClick = async (flight) => {
-    console.log(flight);
     try {
       const requestBody = {
-        FlightOffers: [
+        flightOffers: [
           {
             type: "flight-offer",
             id: flight.id,
