@@ -81,12 +81,21 @@ const PriceDetails = ({ flightsPricing }) => {
 
     return stopInfo.join(", ");
   };
-
   const checkedBags = (fareDetailsBySegment) => {
-    if (!fareDetailsBySegment[0].includedCheckedBags.weightUnit) {
-      return null;
+    const includedCheckedBags = fareDetailsBySegment[0]?.includedCheckedBags;
+    if (!includedCheckedBags) {
+      return;
     }
-    return `${fareDetailsBySegment[0].includedCheckedBags.weight} ${fareDetailsBySegment[0].includedCheckedBags.weightUnit}`;
+
+    if (includedCheckedBags.weightUnit && includedCheckedBags.weight) {
+      return `${includedCheckedBags.weight} ${includedCheckedBags.weightUnit}`;
+    }
+
+    if (typeof includedCheckedBags.quantity === "number") {
+      return `${includedCheckedBags.quantity} túi(s)`;
+    }
+
+    return "Không có hành lý nào";
   };
 
   return (

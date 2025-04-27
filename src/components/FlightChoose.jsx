@@ -11,12 +11,13 @@ import {
   vietnamairlines,
   vietjetair,
 } from "../assets/logo";
-import { FlightCard, PriceDetails, PriceGraph } from "../container";
-import { Link, useNavigate } from "react-router-dom";
+import { FlightCard, PriceDetails } from "../container";
+import { useNavigate } from "react-router-dom";
 
 const FlightChoose = (props) => {
   const [priceShown, setPriceShow] = useState(false);
   const [selectedPriceData, setSelectedPriceData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handlePriceToggle = () => {
@@ -24,6 +25,9 @@ const FlightChoose = (props) => {
   };
 
   const handleFlightClick = async (flight) => {
+    if (isLoading) return; // Ngăn người dùng click liên tục khi đang xử lý
+
+    setIsLoading(true); // Bắt đầu xử lý
     try {
       const requestBody = {
         flightOffers: [
@@ -40,7 +44,9 @@ const FlightChoose = (props) => {
           },
         ],
       };
+
       console.log(requestBody);
+
       const response = await axios.post(
         "https://localhost:7021/api/FlightBooking/searchFlightPricing",
         requestBody,
@@ -54,6 +60,8 @@ const FlightChoose = (props) => {
       console.log(response.data);
     } catch (error) {
       console.error("Error booking flight", error);
+    } finally {
+      setIsLoading(false); // Kết thúc xử lý
     }
   };
 
@@ -171,7 +179,9 @@ const FlightChoose = (props) => {
               {currentFlights.map((item, index) => (
                 <div
                   key={index}
-                  className="cursor-pointer hover:bg-[#F6F6FE] transition-all duration-300 focus:bg-[#F6F6FE]"
+                  className={`cursor-pointer hover:bg-[#F6F6FE] transition-all duration-300 focus:bg-[#F6F6FE] ${
+                    isLoading ? "pointer-events-none opacity-50" : ""
+                  }`}
                   onClick={() => handleFlightClick(item)}
                 >
                   <FlightCard

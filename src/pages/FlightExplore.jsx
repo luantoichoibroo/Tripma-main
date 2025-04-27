@@ -6,9 +6,11 @@ import { bed, holes, kenya, seoul, shangai, wall } from "../assets/images";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+
 const FlightExplore = () => {
   const location = useLocation();
-  const [flights, setFlights] = useState([]);
+  const [flights, setFlights] = useState({}); // Lưu dữ liệu gốc từ API (gồm cả .data)
+  const [sortedFlights, setSortedFlights] = useState([]); // Danh sách chuyến bay sau khi sắp xếp
   const [loading, setLoading] = useState(true);
 
   const origin = location.state.origin;
@@ -16,7 +18,6 @@ const FlightExplore = () => {
   const departureDate = location.state.departureDate;
   const returnDate = location.state.returnDate;
   const adult = location.state.adult;
-  const minor = location.state.minor;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,11 +31,11 @@ const FlightExplore = () => {
               departureDate,
               returnDate,
               adults: adult,
-              minor: minor,
             },
           }
         );
-        setFlights(response.data);
+        setFlights(response.data); // Lưu toàn bộ dữ liệu trả về từ API
+        setSortedFlights(response.data.data); // Gán danh sách chuyến bay ban đầu từ flights.data
       } catch (error) {
         console.error("Lỗi khi fetch API:", error);
       } finally {
@@ -44,26 +45,65 @@ const FlightExplore = () => {
     fetchData();
   }, []);
 
+  // Hàm xử lý sắp xếp
+  const handleSortOptionsChange = (type, value) => {
+    if (!flights.data || !Array.isArray(flights.data)) {
+      console.error("flights.data không hợp lệ:", flights.data);
+      return;
+    }
+
+    let sorted = [...flights.data]; // Tạo bản sao danh sách chuyến bay gốc từ flights.data
+
+    if (type === "price") {
+      if (value === "asc") {
+        sorted.sort(
+          (a, b) => parseFloat(a.price.total) - parseFloat(b.price.total)
+        ); // Giá tăng dần
+      } else if (value === "desc") {
+        sorted.sort(
+          (a, b) => parseFloat(b.price.total) - parseFloat(a.price.total)
+        ); // Giá giảm dần
+      }
+    } else if (type === "time") {
+      if (value === "earliest") {
+        sorted.sort(
+          (a, b) =>
+            new Date(a.itineraries[0].segments[0].departure.at) -
+            new Date(b.itineraries[0].segments[0].departure.at)
+        ); // Sớm nhất
+      } else if (value === "latest") {
+        sorted.sort(
+          (a, b) =>
+            new Date(b.itineraries[0].segments[0].departure.at) -
+            new Date(a.itineraries[0].segments[0].departure.at)
+        ); // Muộn nhất
+      }
+    }
+
+    setSortedFlights(sorted); // Cập nhật danh sách chuyến bay đã sắp xếp
+  };
+
   return (
     <>
       <div className="px-8 w-full flex flex-col">
         <div className="mt-10">
-          <SelectDetails />
+          {/* Truyền hàm handleSortOptionsChange vào SelectDetails */}
+          <SelectDetails onSortOptionsChange={handleSortOptionsChange} />
         </div>
         <div className="mt-16">
           {loading ? (
             <p>Đang tải dữ liệu chuyến bay...</p>
-          ) : flights.data.length > 0 ? (
-            <FlightChoose flights={flights.data} />
+          ) : sortedFlights.length > 0 ? (
+            <FlightChoose flights={sortedFlights} />
           ) : (
             <p>Không có chuyến bay nào!</p>
           )}
         </div>
-        <div className="mt-20 flex flex-col gap-7">
+        {/* <div className="mt-20 flex flex-col gap-7">
           <div className="flex items-center justify-between">
             <p className="text-[#6E7491] font-medium md:font-bold sm:text-base md:text-[24px] md:leading-8">
               Find <span className="text-[#54cdb7]"> places to stay</span> in
-              japan
+              Japan
             </p>
             <Link
               to="/hotels"
@@ -91,6 +131,7 @@ const FlightExplore = () => {
             />
           </div>
         </div>
+
         <div className="mt-20 flex flex-col gap-7">
           <div className="flex items-center justify-between">
             <p className="text-[#6E7491] font-medium md:font-bold sm:text-base md:text-[24px] md:leading-8">
@@ -128,7 +169,7 @@ const FlightExplore = () => {
               des="This modern city is a traveler’s dream"
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

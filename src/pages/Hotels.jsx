@@ -1,12 +1,11 @@
-import { bed, holes, maldivs, mongolia, morocco, wall } from "../assets/images"
-import { PlacesCard } from "../container"
-
+import { bed, holes, maldivs, mongolia, morocco, wall } from "../assets/images";
+import { PlacesCard } from "../container";
 
 const Hotels = () => {
   return (
     <>
-    <div className=" px-8 flex flex-col gap-7 mt-10">
-    <div className="flex items-start justify-start">
+      <div className=" px-8 flex flex-col gap-7 mt-10">
+        <div className="flex items-start justify-start">
           <p className="text-[#6E7491] font-medium md:font-bold sm:text-base md:text-[24px] md:leading-8">
             Find best <span className="text-[#54cdb7]">places to stay</span>
           </p>
@@ -30,25 +29,25 @@ const Hotels = () => {
             name="Mongolia"
             desc="Traditional Mongolian yurts consists of an angled latticework of wood or bamboo for walls, ribs, and a wheel."
           />
-           <PlacesCard
-              image={bed}
-              name="Hotel Kaneyamaen and Bessho SASA"
-              desc="Located at the base of Mount Fuji, Hotel Kaneyamaen is a traitional japanese ryokan with a modern twist. Enjoy a private onsen bath and a private multi-course kaiseki dinner."
-            />
-            <PlacesCard
-              image={wall}
-              name="HOTEL THE FLAG 大阪市"
-              desc="Make a stop in Osaka and stay at HOTEL THE FLAG, just a few minutes walk to experience the food culture surrounding Dontonbori. Just one minute away is the Shinsaibashi shopping street."
-            />
-            <PlacesCard
-              image={holes}
-              name="9 Hours Shinjuku"
-              desc="Experience a truly unique stay in an authentic Japanese capsule hotel. 9 Hours Shinjuku is minutes from one of Japan’s busiest train stations. Just take the NEX train from Narita airport!"
-            />
+          <PlacesCard
+            image={bed}
+            name="Hotel Kaneyamaen and Bessho SASA"
+            desc="Located at the base of Mount Fuji, Hotel Kaneyamaen is a traitional japanese ryokan with a modern twist. Enjoy a private onsen bath and a private multi-course kaiseki dinner."
+          />
+          <PlacesCard
+            image={wall}
+            name="HOTEL THE FLAG 大阪市"
+            desc="Make a stop in Osaka and stay at HOTEL THE FLAG, just a few minutes walk to experience the food culture surrounding Dontonbori. Just one minute away is the Shinsaibashi shopping street."
+          />
+          <PlacesCard
+            image={holes}
+            name="9 Hours Shinjuku"
+            desc="Experience a truly unique stay in an authentic Japanese capsule hotel. 9 Hours Shinjuku is minutes from one of Japan’s busiest train stations. Just take the NEX train from Narita airport!"
+          />
         </div>
-    </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Hotels
+export default Hotels;

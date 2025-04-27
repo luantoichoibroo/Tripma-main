@@ -11,6 +11,9 @@ import {
   Payment,
   SeatSelect,
 } from "./pages";
+import CheckoutSuccess from "./components/CheckoutSuccess";
+import SearchFlight from "./components/SearchFlight";
+import CheckoutCancel from "./components/CheckoutCancel";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -28,6 +31,10 @@ const App = () => {
           <Route path="/seat-selection" element={<SeatSelect />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/confirm" element={<Confirm />} />
+          <Route path="/checkout-success" element={<CheckoutSuccess />} />{" "}
+          <Route path="/search-flight" element={<SearchFlight />} />
+          <Route path="/checkout-cancel" element={<CheckoutCancel />} />
+          {/* Thêm route */}
         </Routes>
         <Footer />
         <ToastContainer

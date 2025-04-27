@@ -48,21 +48,20 @@ const Hero = () => {
       key: "selection",
     },
   ]);
-  const [tripType, setTripType] = useState("one-way"); // Để kiểm tra kiểu chuyến bay
+  const [tripType, setTripType] = useState("one-way");
 
   const [openOptions, setOpenOptions] = useState(false);
   const [options, setOptions] = useState({
     adult: 1,
-    minor: 0,
   });
 
-  const handleOptions = (name, oparetion) => {
-    setOptions((prev) => {
-      return {
+  const handleOptions = (name, operation) => {
+    if (name === "adult") {
+      setOptions((prev) => ({
         ...prev,
-        [name]: oparetion === "i" ? options[name] + 1 : options[name] - 1,
-      };
-    });
+        [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
+      }));
+    }
   };
 
   const handleSearch = () => {
@@ -75,7 +74,6 @@ const Hero = () => {
     const originIata = extractIataCode(departureSuggest.input);
     const destinationIata = extractIataCode(arrivalSuggest.input);
 
-    // Nếu là một chiều, gửi ngày về là null
     const returnDate =
       tripType === "round-trip" ? format(date[0].endDate, "yyyy-MM-dd") : null;
 
@@ -86,7 +84,6 @@ const Hero = () => {
         departureDate: format(date[0].startDate, "yyyy-MM-dd"),
         returnDate: returnDate,
         adult: options.adult,
-        minor: options.minor,
       },
     });
   };
@@ -99,20 +96,18 @@ const Hero = () => {
     setTripType(tripType);
 
     if (tripType === "one-way") {
-      // Nếu chọn một chiều, xóa giá trị ngày về
       setDate([
         {
           startDate: date[0].startDate,
-          endDate: null, // Ngày về không có
+          endDate: null,
           key: "selection",
         },
       ]);
     } else {
-      // Nếu chọn khứ hồi, đảm bảo có ngày về hợp lệ
       setDate([
         {
           startDate: date[0].startDate,
-          endDate: date[0].endDate || new Date(), // Đảm bảo có giá trị ngày về
+          endDate: date[0].endDate || new Date(),
           key: "selection",
         },
       ]);
@@ -122,11 +117,9 @@ const Hero = () => {
   const handleDateChange = (item) => {
     setDate([item.selection]);
 
-    // Nếu có cả ngày đi và ngày về, tự động chuyển sang "Khứ hồi"
     if (item.selection.endDate) {
       setTripType("round-trip");
     } else {
-      // Nếu không có ngày về (chọn "Một chiều"), vẫn giữ "Một chiều"
       setTripType("one-way");
     }
   };
@@ -195,7 +188,6 @@ const Hero = () => {
             )}
           </div>
 
-          {/* Thêm Select cho Khứ hồi/Một chiều */}
           <div className="flex w-full h-full justify-start items-center border-[1px] border-[#CBD4E6] p-2">
             <select
               value={tripType}
@@ -224,11 +216,11 @@ const Hero = () => {
             {openDate && (
               <DateRange
                 editableDateInputs={true}
-                onChange={handleDateChange} // Cập nhật logic khi thay đổi ngày
+                onChange={handleDateChange}
                 moveRangeOnFirstSelection={false}
                 ranges={date}
                 className="absolute top-64 lg:top-20 z-10 "
-                minDate={new Date()} // Đảm bảo không có ngày quá khứ
+                minDate={new Date()}
               />
             )}
           </div>
@@ -239,7 +231,7 @@ const Hero = () => {
               className="text-[#7C8DB0] text-base leading-6 ml-2 cursor-pointer"
               onClick={() => setOpenOptions(!openOptions)}
             >
-              {`${options.adult} Người lớn - ${options.minor} Trẻ em `}
+              {`${options.adult} Người lớn`}
             </span>
             {openOptions && (
               <div className="w-52 h-fit flex flex-col gap-4 rounded-md bg-white shadowCard absolute lg:top-[70px] top-64 p-4 z-10">
@@ -259,27 +251,6 @@ const Hero = () => {
                     <button
                       className="border-2 border-[#605DEC] px-2 text-[#7C8DB0]"
                       onClick={() => handleOptions("adult", "i")}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[#7C8DB0] text-base leading-6">
-                    Minors:
-                  </span>
-                  <div className="flex items-center gap-4">
-                    <button
-                      className="border-2 border-[#605DEC] px-2 text-[#7C8DB0] disabled:cursor-not-allowed"
-                      onClick={() => handleOptions("minor", "d")}
-                      disabled={options.minor <= 0}
-                    >
-                      -
-                    </button>
-                    <span className="text-[#7C8DB0]">{options.minor}</span>
-                    <button
-                      className="border-2 border-[#605DEC] px-2 text-[#7C8DB0]"
-                      onClick={() => handleOptions("minor", "i")}
                     >
                       +
                     </button>

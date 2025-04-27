@@ -11,7 +11,8 @@ import united from "./UnitedAirlines.png";
 import tripma from "./tripma.png";
 import vietnamairlines from "./VietnamAirlineslogo.png";
 import vietjetair from "./vietjetairlogo.jpg";
-
+import logosieunhan from "./logo.jpg";
+import flighticon from "./flighticon.webp";
 export {
   china,
   france,
@@ -26,4 +27,7 @@ export {
   tripma,
   vietjetair,
   vietnamairlines,
+  logosieunhan,
+  flighticon,
+  // Add other logos here
 };
