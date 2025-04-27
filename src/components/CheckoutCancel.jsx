@@ -16,7 +16,7 @@ const CheckoutCancel = () => {
       try {
         // Gửi yêu cầu cập nhật trạng thái thanh toán
         const response = await axios.post(
-          `https://localhost:7021/api/FlightBooking/checkoutCancel`,
+          `http://banvemaybaynhom9.runasp.net/api/FlightBooking/checkoutCancel`,
           null, // Không có payload body
           { params: { sessionId } } // Gửi sessionId dưới dạng query parameter
         );

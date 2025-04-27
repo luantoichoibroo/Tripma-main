@@ -23,7 +23,7 @@ const FlightExplore = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://localhost:7021/api/FlightBooking/searchFlight`,
+          `http://banvemaybaynhom9.runasp.net/api/FlightBooking/searchFlight`,
           {
             params: {
               origin,

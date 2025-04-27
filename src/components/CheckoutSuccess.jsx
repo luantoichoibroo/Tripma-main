@@ -18,7 +18,7 @@ const CheckoutSuccess = () => {
       try {
         // Gửi yêu cầu cập nhật trạng thái thanh toán
         const response = await axios.post(
-          `https://localhost:7021/api/FlightBooking/checkoutSuccess`,
+          `http://banvemaybaynhom9.runasp.net/api/FlightBooking/checkoutSuccess`,
           null, // Không có payload body
           { params: { sessionId } } // Gửi sessionId dưới dạng query parameter
         );
@@ -27,7 +27,7 @@ const CheckoutSuccess = () => {
 
         // Lấy chi tiết đơn hàng
         const orderResponse = await axios.get(
-          `https://localhost:7021/api/FlightBooking/GetOrderBySessionId`,
+          `http://banvemaybaynhom9.runasp.net/api/FlightBooking/GetOrderBySessionId`,
           { params: { sessionId } }
         );
 

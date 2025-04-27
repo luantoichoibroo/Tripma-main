@@ -48,7 +48,7 @@ const FlightChoose = (props) => {
       console.log(requestBody);
 
       const response = await axios.post(
-        "https://localhost:7021/api/FlightBooking/searchFlightPricing",
+        "http://banvemaybaynhom9.runasp.net/api/FlightBooking/searchFlightPricing",
         requestBody,
         {
           headers: {

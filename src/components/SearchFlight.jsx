@@ -18,7 +18,7 @@ const SearchFlight = () => {
     try {
       // Thực hiện gọi API bằng axios
       const response = await axios.get(
-        `https://localhost:7021/api/FlightBooking/order/${encodeURIComponent(
+        `http://banvemaybaynhom9.runasp.net/api/FlightBooking/order/${encodeURIComponent(
           orderId
         )}` // Sử dụng endpoint thật
       );

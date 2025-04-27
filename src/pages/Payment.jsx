@@ -39,7 +39,7 @@ const Payment = () => {
         flightOffers: flightOffers,
       };
       const response = await axios.post(
-        "https://localhost:7021/api/FlightBooking/searchFlightPricing",
+        "http://banvemaybaynhom9.runasp.net/api/FlightBooking/searchFlightPricing",
         requestBody,
         {
           headers: {
@@ -67,7 +67,7 @@ const Payment = () => {
       };
 
       const response = await axios.post(
-        "https://localhost:7021/api/FlightBooking/CreateOrder",
+        "http://banvemaybaynhom9.runasp.net/api/FlightBooking/CreateOrder",
         flightOrderRequest,
         {
           headers: {
@@ -108,7 +108,7 @@ const Payment = () => {
     try {
       const stripe = await stripePromise;
       const response = await axios.post(
-        "https://localhost:7021/api/Stripe/CreateCheckoutSession",
+        "http://banvemaybaynhom9.runasp.net/api/Stripe/CreateCheckoutSession",
         orders,
         {
           headers: {
